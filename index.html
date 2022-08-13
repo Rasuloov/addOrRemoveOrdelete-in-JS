@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-200">
+    <div id="app">
+        <div class="flex justify-center pt-5">
+            <input type="text" v-model="task" @keyup.enter="currentTask" class="border outline-none text-md border-violet-600 pl-2 py-1 rounded-md lg:w-6/12 w-8/12" placeholder="What are your tasks for today ?">
+        </div>
+        <!-- current home work  -->
+        <div class="flex justify-center mt-5 font-mono">
+            <div class="lg:w-10/12 w-11/12">
+                <div v-if="homeWorks.length >= 1" class="mt-10 pb-5 pl-2 font-bold text-lg font-mono">Current Tasks</div>
+                <ul class="border-2 mx-2 mb-2 px-4 shadow-lg bg-white flex justify-between shadow-lg items-center border-violet-300 space-y-2 rounded-md " v-for="(homeWork,index) in homeWorks">
+                    <h1>{{homeWork}}</h1>
+                    <div class="space-x-2 pb-2">
+                        <button @click="laterHomeWork(index)" class="transtion ease-in-out delay-150 duration-150 border border-green-500 rounded-full px-2 py-1 text-green-500  hover:font-bold hover:border-2 hover:border-green-500 hover:text-green-500">Later</button>
+                        <button @click="deleteCurrentTask(index)" class="transtion ease-in-out delay-150 duration-150 border border-red-500 rounded-full px-1 py-1 text-red-500  hover:font-bold hover:border-2 hover:border-red-500 hover:text-red-500">Delete</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <!-- later home work  -->
+        <div class="flex justify-center mt-5 font-mono">
+            <div class="lg:w-10/12  w-11/12">
+                <div v-if="laters.length >= 1" class="mt-10 pb-5 pl-2 font-bold text-lg font-mono">Later Tasks</div>
+                <ul class="border-2 mx-2 mb-2 px-4 shadow-lg bg-white flex justify-between items-center shadow-lg border-green-300 space-y-2 rounded-md " v-for="(later,index) in laters">
+                    <h1>{{later}}</h1>
+                    <div class="space-x-2 pb-2">
+                        <button @click="currentHomeWork(index)" class="transtion ease-in-out delay-150 duration-150 border border-violet-500 rounded-full px-2 py-1 text-violet-500 hover:font-bold hover:border-2 hover:border-violet-500 hover:text-violet-500">current</button>
+                        <button @click="deleteLaterTask(index)" class="transtion ease-in-out delay-150 duration-150 border border-red-500 rounded-full px-1 py-1 text-red-500 hover:font-bold hover:border-2 hover:border-red-500 hover:text-red-500">Delete</button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        let vue = new Vue({
+            el: '#app',
+            data: {
+                task: '',
+                homeWorks: [],
+                laters: [],
+            },
+            methods: {
+                currentTask() {
+                    if (this.task) {
+                        this.homeWorks.push(this.task)
+                        this.task = ''
+                    } else {
+                        alert('Enter a Task pls')
+                    }
+                },
+                laterHomeWork(index) {
+                    this.laters.push(this.homeWorks[index])
+                    this.homeWorks.splice(index, 1)
+                },
+                currentHomeWork(index) {
+                    this.homeWorks.push(this.laters[index])
+                    this.laters.splice(index, 1)
+                },
+                deleteCurrentTask(index) {
+                    this.homeWorks.splice(index, 1)
+                },
+                deleteLaterTask(index) {
+                    this.laters.splice(index, 1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
